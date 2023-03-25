@@ -1,0 +1,23 @@
+--cpu Cortex-M3
+"testdtud\startup_stm32f103x6.o"
+"testdtud\main.o"
+"testdtud\stm32f1xx_it.o"
+"testdtud\stm32f1xx_hal_msp.o"
+"testdtud\stm32f1xx_hal_gpio_ex.o"
+"testdtud\stm32f1xx_hal_tim.o"
+"testdtud\stm32f1xx_hal_tim_ex.o"
+"testdtud\stm32f1xx_hal.o"
+"testdtud\stm32f1xx_hal_rcc.o"
+"testdtud\stm32f1xx_hal_rcc_ex.o"
+"testdtud\stm32f1xx_hal_gpio.o"
+"testdtud\stm32f1xx_hal_dma.o"
+"testdtud\stm32f1xx_hal_cortex.o"
+"testdtud\stm32f1xx_hal_pwr.o"
+"testdtud\stm32f1xx_hal_flash.o"
+"testdtud\stm32f1xx_hal_flash_ex.o"
+"testdtud\stm32f1xx_hal_exti.o"
+"testdtud\system_stm32f1xx.o"
+--strict --scatter "testdtud\testdtud.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "testdtud.map" -o testdtud\testdtud.axf
