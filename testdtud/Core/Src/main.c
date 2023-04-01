@@ -21,9 +21,15 @@
 int a,b,c;
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+uint16_t d=0, e=0;
 /* USER CODE END Includes */
+	typedef enum {
 
+	 b1=375,
+	 b0=125,
+	 bsync=250,
+/** @endcond */
+} bit;
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -102,23 +108,25 @@ void delay(uint32_t time)
 	}
 		int read(void)
 	{
-		int e;
-		static uint16_t time=0;
+		int e=0;
+		uint16_t time=0;
 		while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0)==1)
 		{
-			e=1;
+			if(e==0)				
+			{
 				time=HAL_GetTick();
-			
+				e=1;
+			}
 		}
 		if(e==1)
 			{
 		time=HAL_GetTick()-time;
-		if(time<11)
+		if(time>10&&time<14)
 			{	a++;
-				
 			}	
 		else if(time>=22&&time<=28)
-			{	b++;
+			{	
+				b++;
 				
 			}	
 		else if(time>33&&time<=39)
@@ -126,6 +134,14 @@ void delay(uint32_t time)
 				
 			}	}
 	}	
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+	{
+		d++;
+		if(e==1)
+		HAL_TIM_PWM_Stop_IT(&htim3,TIM_CHANNEL_2);	
+		
+	}
+
 /* USER CODE END 0 */
 
 /**
@@ -163,17 +179,31 @@ int main(void)
 	HAL_TIM_Base_Start(&htim1);
 	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
 	htim2.Instance->CCR2=500;
-	HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start_IT(&htim3,TIM_CHANNEL_2);
 
   /* USER CODE END 2 */
-bit_sync();
+	bit_0(); 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-read();
+			read();
+		if(d==1)
+			{
+				bit_1();
+			}
+		else if(d==2)
+			{
+				bit_0();
+			}
+		else if(d==3)
+			{
+				bit_1();
+				d=0;
+				e=1;
+			}
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
