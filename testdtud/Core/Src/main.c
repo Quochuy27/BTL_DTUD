@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+int a,b,c;
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -100,7 +100,32 @@ void delay(uint32_t time)
 	{
 		htim3.Instance->CCR2=250;
 	}
-	
+		int read(void)
+	{
+		int e;
+		static uint16_t time=0;
+		while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0)==1)
+		{
+			e=1;
+				time=HAL_GetTick();
+			
+		}
+		if(e==1)
+			{
+		time=HAL_GetTick()-time;
+		if(time<11)
+			{	a++;
+				
+			}	
+		else if(time>=22&&time<=28)
+			{	b++;
+				
+			}	
+		else if(time>33&&time<=39)
+			{	c++;
+				
+			}	}
+	}	
 /* USER CODE END 0 */
 
 /**
@@ -139,15 +164,16 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
 	htim2.Instance->CCR2=500;
 	HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
-	htim3.Instance->CCR2=250;
+
   /* USER CODE END 2 */
+bit_sync();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-		bit_0();
+read();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -368,13 +394,18 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PA0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
